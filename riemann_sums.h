@@ -73,14 +73,15 @@ int left_sum(term *terms, size_t t_length, range r, double *result)
 	check(result != NULL, "result must not be null.");
 
 	size_t i;
+	double b;
 	*result = 0;
 	log_info("left_sum called. \n");
 
-	for (i = 0; i < r.count; i++)
+	for (i = 0, b = r.start; i < r.count; i++, b += r.interval)
 	{
-		double tmp;
-		check(find_y(terms, t_length, (double)i * r.interval, &tmp) == 0, "Could not calculate.");
-		*result += tmp * r.interval;
+		double *tmp = calloc(1, sizeof(double));
+		check(find_y(terms, t_length, b, tmp) == 0, "Could not calculate.");
+		*result += *tmp;
 		log_info("result: %lf", *result);
 	}
 	
