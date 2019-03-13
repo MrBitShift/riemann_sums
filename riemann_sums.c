@@ -16,7 +16,7 @@ int debug_time()
 	time(&now);
 
 	// Convert to local time format and print to stdout
-	fprintf(get_dbg_out(), "\n-----------------------\n");
+	fprintf(get_dbg_out(), "\r\n-----------------------\r\n");
 	debug("%s", ctime(&now));
 
 	return 0;
@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
 	
 	printf("Result: %lf\n", *result);
 	
-	close_dbg_out();
 	debug("Main exiting normally");
+	close_dbg_out();
 	return 0;
 
 error:

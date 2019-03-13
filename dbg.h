@@ -15,21 +15,21 @@ FILE *get_dbg_out()
 #ifdef NDEBUG
 #define debug(M, ...)
 #else
-#define debug(M, ...) fprintf(get_dbg_out(), "[DEBUG] %s:%d: " M "\n",\
+#define debug(M, ...) fprintf(get_dbg_out(), "[DEBUG] %s:%d: " M "\r\n",\
         __FILE__, __LINE__, ##__VA_ARGS__); flush_dbg_out();
 #endif
 
 #define clean_errno() (errno == 0 ? "None" : strerror(errno))
 
 #define log_err(M, ...) fprintf(stderr,\
-        "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__,\
+        "[ERROR] (%s:%d: errno: %s) " M "\r\n", __FILE__, __LINE__,\
         clean_errno(), ##__VA_ARGS__)
 
 #define log_warn(M, ...) fprintf(stderr,\
-        "[WARN] (%s:%d: errno: %s) " M "\n",\
+        "[WARN] (%s:%d: errno: %s) " M "\r\n",\
         __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)
 
-#define log_info(M, ...) fprintf(stderr, "[INFO] (%s:%d) " M "\n",\
+#define log_info(M, ...) fprintf(stderr, "[INFO] (%s:%d) " M "\r\n",\
         __FILE__, __LINE__, ##__VA_ARGS__);
 
 #define check(A, M, ...) if(!(A)) {\
@@ -45,7 +45,7 @@ FILE *get_dbg_out()
 
 #define flush_dbg_out() fflush(get_dbg_out());
 
-#define close_dbg_out() fprintf(get_dbg_out(), "\n"); flush_dbg_out(); fclose(get_dbg_out());
+#define close_dbg_out() fprintf(get_dbg_out(), "\r\n"); flush_dbg_out(); fclose(get_dbg_out());
 
 
 #endif
