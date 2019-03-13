@@ -81,12 +81,13 @@ int get_func(riemann_func *func)
 	return 0;
 
 error:
+	debug("Failure in get_func");
 	return 1;
 }
 
 int left_sum(term *terms, size_t t_length, range r, double *result)
 {
-	debug("\nEntering left_sum");
+	debug("Entering left_sum");
 	init_globals();
 	check(terms != NULL, "terms cannot be null.");
 	check(t_length > 0, "t_length must be greater than 0.");
@@ -106,11 +107,12 @@ int left_sum(term *terms, size_t t_length, range r, double *result)
 
 	*result *= interval;
 	
-	debug("\nExiting left_sum");
+	debug("Exiting left_sum");
 
 	return 0;
 
 error:
+	debug("Failure in left_sum");
 	return 1;
 }
 
@@ -141,6 +143,7 @@ int right_sum(term *terms, size_t t_length, range r, double *result)
 	return 0;
 
 error:
+	debug("Failure in right_sum");
 	return 1;
 
 }
@@ -172,6 +175,7 @@ int midpoint_sum(term *terms, size_t t_length, range r, double *result)
 	return 0;
 
 error:
+	debug("Failure in midpoint_sum");
 	return 1;
 }
 
@@ -206,6 +210,7 @@ int trapezoid_sum(term *terms, size_t t_length, range r, double *result)
 	return 0;
 
 error:
+	debug("Failure in trapezoid_sum");
 	return 1;
 }
 

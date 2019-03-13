@@ -57,6 +57,7 @@ int get_equation(term **result, size_t *length)
 	return 0;
 
 error:
+	debug("Failure in get_equation");
 	return 1;
 }
 
@@ -89,6 +90,7 @@ int get_range(range *result)
 	return 0;
 
 error:
+	debug("Failure in get_range");
 	return 1;
 }
 
@@ -112,6 +114,7 @@ int find_y(term *equation, size_t length, double x, double *out_ptr)
 	return 0;
 
 error:
+	debug("Failure in find_y");
 	return 1;
 }
 

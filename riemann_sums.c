@@ -76,9 +76,11 @@ int main(int argc, char *argv[])
 	printf("Result: %lf\n", *result);
 	
 	close_dbg_out();
+	debug("Main exiting normally");
 	return 0;
 
 error:
+	debug("Failure in main");
 	close_dbg_out();
 	return 1;
 }
