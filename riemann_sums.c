@@ -19,28 +19,14 @@ int debug_time()
 	fprintf(get_dbg_out(), "\r\n-----------------------\r\n");
 	debug("%s", ctime(&now));
 
-	return 0;
-}
-
-int handle_args(int argc, char *argv[])
-{
-	if (argc == 1) 
-	{
-		dbg_out = fopen(LOG_FILENAME, "a");
-		return 0;
-	}
-	if (argc == 2 && strcmp(argv[1], SHOW_INFO_FLAG) == 0)
-	{
-		printf("Showing info in this session.\n");
-	}
-	
-	return 0;
+	return OPERATION_SUCCESS;
 }
 
 int main(int argc, char *argv[])
 {
-	handle_args(argc, argv);
-	debug_time();
+	dbg_out = fopen(LOG_FILENAME, "a");
+	check(dbg_out != NULL, "Failed to open %s. Try running with admin permissions.", LOG_FILENAME);
+	check(debug_time() == OPERATION_SUCCESS, "Failed to write time to debug.");
 	
 	int rc;
 	size_t i;
@@ -53,7 +39,7 @@ int main(int argc, char *argv[])
 	range *rng_ptr = calloc(1, sizeof(range));
 
 	rc = get_equation(terms_ptr, &len);
-	check(rc == 0, "Could not get equation.");
+	check(rc == OPERATION_SUCCESS, "Could not get equation.");
 	terms = *terms_ptr;
 	
 	for (i = 0; i < len; i++)
@@ -63,24 +49,25 @@ int main(int argc, char *argv[])
 	}
 	
 	rc = get_range(rng_ptr);
-	check(rc == 0, "Could not get range.");
+	check(rc == OPERATION_SUCCESS, "Could not get range.");
 	rng = *rng_ptr;
 	debug("start: %lf count: %zu end: %lf", rng.start, rng.count, rng.end);
 	
 	rc = get_func(&function);
-	check(rc == 0, "Could not get function.");
+	check(rc == OPERATION_SUCCESS, "Could not get function.");
 	debug("function name: %s", function.name);
 	
 	check(function.func(terms, len, rng, result) == 0, "failure in %s", function.name);
 	
 	printf("Result: %lf\n", *result);
+	debug("Result: %lf\n", *result);
 	
-	debug("Main exiting normally");
+	debug("Operation successful. Exiting normally.");
 	close_dbg_out();
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
-	debug("Failure in main");
+	log_err("Operation failed. Exiting with status 1.");
 	close_dbg_out();
-	return 1;
+	return OPERATION_FAILURE;
 }

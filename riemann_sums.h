@@ -60,6 +60,7 @@ int get_func(riemann_func *func)
 	debug("Entering get_func");
 	init_globals();
 	check(func != NULL, "func can't be null.");
+	
 	int rc;
 	int function;
 	size_t i;
@@ -71,24 +72,23 @@ int get_func(riemann_func *func)
 	}
 	
 	rc = scanf("%d", &function);
-	
 	check(function >= 0 && function < num_funcs && rc > 0, INVALID_FUNC);
 
 	*func = functions[function];
 
 	debug("Exiting get_func");
-
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
 	debug("Failure in get_func");
-	return 1;
+	return OPERATION_FAILURE;
 }
 
 int left_sum(term *terms, size_t t_length, range r, double *result)
 {
 	debug("Entering left_sum");
 	init_globals();
+
 	check(terms != NULL, "terms cannot be null.");
 	check(t_length > 0, "t_length must be greater than 0.");
 	check(result != NULL, "result must not be null.");
@@ -101,25 +101,25 @@ int left_sum(term *terms, size_t t_length, range r, double *result)
 	for (i = 0, b = r.start; i < r.count; i++, b += interval)
 	{
 		double *tmp = calloc(1, sizeof(double));
-		check(find_y(terms, t_length, b, tmp) == 0, "Could not calculate.");
+		check(find_y(terms, t_length, b, tmp) == OPERATION_SUCCESS, "Could not calculate.");
 		*result += *tmp;
 	}
 
 	*result *= interval;
 	
 	debug("Exiting left_sum");
-
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
 	debug("Failure in left_sum");
-	return 1;
+	return OPERATION_FAILURE;
 }
 
 int right_sum(term *terms, size_t t_length, range r, double *result)
 {
 	debug("Entering right_sum");
 	init_globals();
+	
 	check(terms != NULL, "terms cannot be null.");
 	check(t_length > 0, "t_length must be greater than 0.");
 	check(result != NULL, "result must not be null.");
@@ -132,19 +132,18 @@ int right_sum(term *terms, size_t t_length, range r, double *result)
 	for (i = 0, b = r.start + interval; i < r.count; i++, b += interval)
 	{
 		double *tmp = calloc(1, sizeof(double));
-		check(find_y(terms, t_length, b, tmp) == 0, "Could not calculate.");
+		check(find_y(terms, t_length, b, tmp) == OPERATION_SUCCESS, "Could not calculate.");
 		*result += *tmp;
 	}
 
 	*result *= interval;
 	
 	debug("Exiting right_sum");
-
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
 	debug("Failure in right_sum");
-	return 1;
+	return OPERATION_FAILURE;
 
 }
 
@@ -164,25 +163,25 @@ int midpoint_sum(term *terms, size_t t_length, range r, double *result)
 	for (i = 0, b = r.start + (interval / 2); i < r.count; i++, b += interval)
 	{
 		double *tmp = calloc(1, sizeof(double));
-		check(find_y(terms, t_length, b, tmp) == 0, "Could not calculate.");
+		check(find_y(terms, t_length, b, tmp) == OPERATION_SUCCESS, "Could not calculate.");
 		*result += *tmp;
 	}
 
 	*result *= interval;
 	
 	debug("Exiting midpoint_sum.");
-
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
 	debug("Failure in midpoint_sum");
-	return 1;
+	return OPERATION_FAILURE;
 }
 
 int trapezoid_sum(term *terms, size_t t_length, range r, double *result)
 {
 	debug("Entering trapezoid_sum");
 	init_globals();
+
 	check(terms != NULL, "terms cannot be null.");
 	check(t_length > 0, "t_length must be greater than 0.");
 	check(result != NULL, "result must not be null.");
@@ -198,19 +197,18 @@ int trapezoid_sum(term *terms, size_t t_length, range r, double *result)
 	{
 		double *tmp1 = calloc(1, sizeof(double));
 		double *tmp2 = calloc(1, sizeof(double));
-		check(find_y(terms, t_length, b, tmp1) == 0, "Could not calculate.");
-		check(find_y(terms, t_length, c, tmp2) == 0, "Could not calculate.");
+		check(find_y(terms, t_length, b, tmp1) == OPERATION_SUCCESS, "Could not calculate.");
+		check(find_y(terms, t_length, c, tmp2) == OPERATION_SUCCESS, "Could not calculate.");
 		*result += (*tmp1 + *tmp2) / 2;
 	}
 
 	*result *= interval;
 	
 	debug("Exiting trapezoid_sum");
-
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
 	debug("Failure in trapezoid_sum");
-	return 1;
+	return OPERATION_FAILURE;
 }
 

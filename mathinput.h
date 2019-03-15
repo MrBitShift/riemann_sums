@@ -32,8 +32,7 @@ int get_equation(term **result, size_t *length)
 
 	printf("How many terms are there? ");
 	rc = scanf("%zu", length);
-	printf("\n");
-	check(*length > 0 && rc > 0, INVALID);
+	check(*length > 0 && rc > 0, INVALID); 
 	
 	*result = calloc(*length, sizeof(term)); 
 	
@@ -41,57 +40,46 @@ int get_equation(term **result, size_t *length)
 	{
 		printf("Enter coefficient of term %zu: ", i + 1);
 		rc = scanf("%lf", &(*result)[i].coefficient);
-		printf("\n");
-		
 		check(rc > 0, INVALID);
 		
 		printf("Enter power of term %zu: ", i + 1);
 		rc = scanf("%lf", &(*result)[i].power);
-		printf("\n");
-		
 		check(rc > 0, INVALID);
 	}
 
 	debug("Exiting get_equation");
 
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
 	debug("Failure in get_equation");
-	return 1;
+	return OPERATION_FAILURE;
 }
 
 int get_range(range *result)
 {
+	int rc;
 	debug("Entering get_range");
 	check(result != NULL, "result can't be null.");
 
-	int rc;
-
-	printf("Enter the start of the range: ");
+	printf("Enter the start of the range: a=");
 	rc = scanf("%lf", &result->start);
-	printf("\n");
-
-	check(rc > 0 && result->start, INVALID);
+	check(rc > 0, INVALID);
 	
-	printf("Enter end in the range: ");
+	printf("Enter end in the range: b=");
 	rc = scanf("%lf", &result->end);
-	printf("\n");
-
-	check(rc > 0 && result->end > 0, INVALID);
+	check(rc > 0, INVALID);
 	
-	printf("Enter the count of the range: ");
+	printf("Enter the count of the range: n=");
 	rc = scanf("%zu", &result->count);
-	printf("\n");
-
 	check(rc > 0 && result->count > 0, INVALID);
+	
 	debug("Exiting get_range");
-
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
 	debug("Failure in get_range");
-	return 1;
+	return OPERATION_FAILURE;
 }
 
 int find_y(term *equation, size_t length, double x, double *out_ptr)
@@ -110,12 +98,11 @@ int find_y(term *equation, size_t length, double x, double *out_ptr)
 	}
 
 	debug("Exiting function find_y.");
-
-	return 0;
+	return OPERATION_SUCCESS;
 
 error:
 	debug("Failure in find_y");
-	return 1;
+	return OPERATION_FAILURE;
 }
 
 #endif
