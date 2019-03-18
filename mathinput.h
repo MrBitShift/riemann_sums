@@ -6,7 +6,7 @@
 #include "dbg.h"
 #include <math.h>
 
-#define INVALID "You must enter a valid number.\n"
+#define INVALID "You must enter a valid number."
 
 typedef struct term
 {
@@ -26,6 +26,8 @@ int get_equation(term **result, size_t *length)
 	debug("Entering get_equation");
 	check(result != NULL, "result can't be null.");
 	check(length != NULL, "length can't be null.");
+	
+	*length = -1;
 
 	size_t i;
 	int rc;
@@ -34,6 +36,7 @@ int get_equation(term **result, size_t *length)
 	rc = scanf("%zu", length);
 	check(*length > 0 && rc > 0, INVALID); 
 	
+	free(*result);
 	*result = calloc(*length, sizeof(term)); 
 	
 	for (i = 0; i < *length; i++)

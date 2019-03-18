@@ -16,7 +16,7 @@ int debug_time()
 	time(&now);
 
 	// Convert to local time format and print to stdout
-	fprintf(get_dbg_out(), "\r\n-----------------------\r\n");
+	fprintf(get_dbg_out(), "\n-----------------------\r\n");
 	debug("%s", ctime(&now));
 
 	return OPERATION_SUCCESS;
@@ -24,20 +24,20 @@ int debug_time()
 
 int main(int argc, char *argv[])
 {
-	dbg_out = fopen(LOG_FILENAME, "a");
-	check(dbg_out != NULL, "Failed to open %s. Try running with admin permissions.", LOG_FILENAME);
-	check(debug_time() == OPERATION_SUCCESS, "Failed to write time to debug.");
-	
 	int rc;
 	size_t i;
 	size_t len;
 	double *result = calloc(1, sizeof(result));
 	riemann_func function;
-	term *terms;
+	term *terms = NULL;
 	term **terms_ptr = calloc(1, sizeof(term*));
 	range rng;
 	range *rng_ptr = calloc(1, sizeof(range));
 
+	dbg_out = fopen(LOG_FILENAME, "a");
+	check(dbg_out != NULL, "Failed to open %s. Try running with admin permissions.", LOG_FILENAME);
+	check(debug_time() == OPERATION_SUCCESS, "Failed to write time to debug.");
+	
 	rc = get_equation(terms_ptr, &len);
 	check(rc == OPERATION_SUCCESS, "Could not get equation.");
 	terms = *terms_ptr;
@@ -62,11 +62,25 @@ int main(int argc, char *argv[])
 	printf("Result: %lf\n", *result);
 	debug("Result: %lf\n", *result);
 	
+	debug("Freeing structures.");
+	free(result);
+	free(rng_ptr);
+	free(terms);
+	free(terms_ptr);
+	free_globals();
+
 	debug("Operation successful. Exiting normally.");
 	close_dbg_out();
 	return OPERATION_SUCCESS;
 
 error:
+	debug("Freeing structures.");
+	free(result);
+	free(rng_ptr);
+	free(*terms_ptr);
+	free(terms_ptr);
+	free_globals();
+	
 	log_err("Operation failed. Exiting with status 1.");
 	close_dbg_out();
 	return OPERATION_FAILURE;

@@ -54,6 +54,14 @@ void init_globals()
 	debug("Exiting init_globals");
 }
 
+void free_globals()
+{
+	debug("Entering free_globals");
+	
+	free(functions);
+	
+	debug("Exiting free_globals");
+}
 
 int get_func(riemann_func *func)
 {
@@ -96,16 +104,19 @@ int left_sum(term *terms, size_t t_length, range r, double *result)
 	size_t i;
 	double b;
 	double interval = (r.end - r.start) / r.count;
+	double *tmp = calloc(1, sizeof(double));
 	*result = 0;
 
 	for (i = 0, b = r.start; i < r.count; i++, b += interval)
 	{
-		double *tmp = calloc(1, sizeof(double));
 		check(find_y(terms, t_length, b, tmp) == OPERATION_SUCCESS, "Could not calculate.");
 		*result += *tmp;
 	}
 
 	*result *= interval;
+	
+	debug("Freeing structures");
+	free(tmp);
 	
 	debug("Exiting left_sum");
 	return OPERATION_SUCCESS;
